@@ -2,6 +2,7 @@ from ultralytics import YOLO
 import cv2
 import math
 from transformers import pipeline
+from PIL import Image as im
 import pyttsx3
 # start webcam
 cap = cv2.VideoCapture(0)
@@ -50,9 +51,10 @@ while True:
             print("Class name -->", classNames[cls])
 			
 			#New-Added feature- will speak out the details of each frame of the video
-			model = pipeline(model="ydshieh/vit-gpt2-coco-en")
-			output = model(img)[0]['generated_text']
-			print("Testing the model output :"+output)
+			model2 = pipeline(model="ydshieh/vit-gpt2-coco-en", max_new_tokens = 20)
+			img2 = im.fromarray(img,'RGB')
+			output = model2(img2)[0]['generated_text']
+			print("Testing the model output :"+ output)
 			engine = pyttsx3.init()
 			engine.say(output)
 			engine.runAndWait()
